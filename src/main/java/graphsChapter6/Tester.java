@@ -15,7 +15,7 @@ public class Tester {
         Seller alice = new Seller("alice", false);
         Seller me = new Seller("me", false);
         Seller bob = new Seller("bob", false);
-        Seller anuj = new Seller("anuj", true);
+        Seller anuj = new Seller("anuj", false);
         Seller thom = new Seller("thom", false);
         Seller jonny = new Seller("jonny", false);
         Seller claire = new Seller("claire", false);
@@ -44,11 +44,12 @@ public class Tester {
         sellerQueue.add(me);
         List<Seller> checked = new LinkedList<>();
         boolean trigger = true;
+        boolean checkCycle = false;
         while (!sellerQueue.isEmpty()) {
             Seller seller = sellerQueue.poll();
             if(!checked.contains(seller)){
                 if (seller.isMangoSeller()) {
-                    System.out.println("Person " + seller.getName() + " is Mango seller!");
+                    System.out.println("Person " + seller.getName() + " is Mango seller! Cycle - " + checkCycle);
                     trigger = false;
                     checked.clear();
                     break;
@@ -56,10 +57,12 @@ public class Tester {
                     sellerQueue.addAll(graph.getConnections(seller));
                     checked.add(seller);
                 }
+            }else {
+                checkCycle = true;
             }
         }
         if (trigger){
-            System.out.println("Mango seller not found!");
+            System.out.println("Mango seller not found! Cycle - " + checkCycle);
         }
 
     }
